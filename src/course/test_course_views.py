@@ -1,3 +1,7 @@
+# @author
+# Joanthan Mielke
+# Andy Guibert
+
 import json
 import unittest
 
