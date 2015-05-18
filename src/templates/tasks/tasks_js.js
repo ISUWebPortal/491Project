@@ -160,6 +160,21 @@
 
   }
 
+  function clickMatrixChoice(ctx){
+    var startDate = new Date();
+    var startTime = startDate.getTime();
+    var xmlData = {};
+    xmlData['start'] = startTime;
+    xmlData['end'] = "";
+    xmlData['id'] = $(ctx).parent().find('.choiceID').attr('id');
+    informationForXML.push(xmlData);
+    var suppGroup = $(ctx).closest('div.question-parent')
+    $(suppGroup).find('.wp-supplementary').each(function(){
+      $($(this).find('.panel-body')).css('background-color', '#FFF')
+    })
+    $(ctx).css('background-color', '#CCC')
+  }
+
   function setBtnWidth(ctx, newSize){
     var newClass = 'col-md-' + Math.floor(12/newSize);
     var container = $(ctx).closest('div.question-parent');
@@ -199,6 +214,9 @@
   };
   function addTextLabel(ctx){
     addSuppElement(ctx, '#wp-text-label-template')
+  };
+  function addMatrixChoice(ctx){
+    addSuppElement(ctx, '#wp-matrix-choice-template')
   };
 
   function upload(f, onsuccess){
@@ -430,7 +448,13 @@
       $('.supplementary-target').first().find('.wp-supplementary').each(function(){
         var xd = {};
         xd['text'] = $(this).find('h3').text();
-        xd['id'] = $(this).find('.modal').attr('id');
+        var id = $(this).find('.modal').attr('id');
+        if (typeof(id) == "undefined"){
+          if ($(this).find('.choiceID').length > 0){
+            id = $(this).find('.choiceID').first().attr('id');
+          }
+        }
+        xd['id'] = id;
         var c = $(this).find('.panel-body').first().attr('class');
         var index = c.search('col-md');
         var size = parseInt(c.charAt(index+7));
